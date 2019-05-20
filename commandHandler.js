@@ -10,7 +10,7 @@ const randomInt = (min, max) => (
     Math.floor(Math.random() * ( max - min )) + min
 )
 const capitalize = (name) => (
-    name.charAt(0).toUpperCase() + string.slice(1)
+    name.charAt(0).toUpperCase() + name.slice(1)
 )
 
 
