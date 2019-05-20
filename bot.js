@@ -29,6 +29,7 @@ bot.on('message', async (msg) => {
 
     const command = getCommand(msg.text)
 
+    //commands are made to lowercase in getCommand
     switch (command){
         case '/quote':
             await addQuote(msg)
@@ -39,8 +40,8 @@ bot.on('message', async (msg) => {
                 bot.sendMessage(chatId, `${author}: "${quote}"`)
             }
             break
-        case '/Khelp':
-            bot.sendMessage(chatId, 'No help available ;__;')
+        case '/khelp':
+            bot.sendMessage(chatId, 'No help here')
             break
         default:
             break
