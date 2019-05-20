@@ -1,12 +1,11 @@
 const quoteService = require('./services/quoteService')
 
 const findQuoteText = (text) => {
-    const res = text.match(/"(.*?)"/)
+    const res = text.match(/"(.*?)"/) //matches any text wrapped in doublequotes
     return res ? res[0] : null
 } 
 
-
-const quoteHandler = (msg) => {
+const addQuoteHandler = (msg) => {
   const text = msg.text
   const arr = text.substring(7).split(' ')
     if (arr.length >= 2) {
@@ -23,4 +22,4 @@ const quoteHandler = (msg) => {
         }
 }
 
-module.exports = { quoteHandler }
+module.exports = { addQuoteHandler }
