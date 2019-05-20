@@ -48,4 +48,4 @@ bot.on('message', async (msg) => {
     }
 })
 
-module.exports.bot
+module.exports = bot
