@@ -5,6 +5,8 @@ const findQuoteText = (text) => {
     return res ? res[0] : null
 } 
 
+const replaceQuotes = (text) => quote.replace(/"/g, '')
+
 const addQuoteHandler = (msg) => {
   const text = msg.text
   const arr = text.substring(7).split(' ')
@@ -15,7 +17,7 @@ const addQuoteHandler = (msg) => {
                     {
                         user: msg.from.id,
                         author: arr[0].toLowerCase(),
-                        quote: quote.replace(/"/g, '')
+                        quote: replaceQuotes(quote)
                     }
                 )
             }

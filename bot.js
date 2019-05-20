@@ -20,14 +20,14 @@ const getCommand = (text) => text.toLowerCase().split(' ')[0] || null
 
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
+    
+    console.log(chatId)
 
     if (chatId !== Number(process.env.ALLOWED_ID)) {
         return
     }
 
     const command = getCommand(msg.text)
-
-    console.log(command)
 
     switch (command){
         case '/quote':
