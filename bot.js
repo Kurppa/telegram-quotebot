@@ -41,6 +41,7 @@ bot.on('message', async (msg) => {
             break
         case '/Khelp':
             bot.sendMessage(chatId, 'No help available ;__;')
+            break
         default:
             break
     }
