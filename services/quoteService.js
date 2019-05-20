@@ -23,8 +23,9 @@ const addQuote = async (quoteObject) => {
 
 }
 
-const getQuotes = () => {
-  return
+const getQuotesWithName = async (name) => {
+    const quotes = await Quote.find({ author: name })
+    return quotes
 }
 
-module.exports = { addQuote, getQuotes }
+module.exports = { addQuote, getQuotesWithName }

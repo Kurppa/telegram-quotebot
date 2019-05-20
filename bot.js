@@ -2,7 +2,7 @@ process.env.NTBA_FIX_319 = 3 //magic lines
 
 const TelegramBot = require('node-telegram-bot-api')
 
-const { addQuoteHandler } = require('./commandHandler')
+const { addQuote, getQuoteWithName } = require('./commandHandler')
 
 const token = process.env.BOT_TOKEN
 
@@ -21,7 +21,7 @@ const getCommand = (text) => text.toLowerCase().split(' ')[0] || null
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
     
-    console.log(chatId)
+    console.log(chatId, msg.chat.title)
 
     if (chatId !== Number(process.env.ALLOWED_ID)) {
         return
@@ -31,7 +31,13 @@ bot.on('message', async (msg) => {
 
     switch (command){
         case '/quote':
-            await addQuoteHandler(msg)
+            await addQuote(msg)
+            break
+        case '/get':
+            const { author, quote} = await getQuoteWithName(msg)
+            if (author && quote) {
+                bot.sendMessage(chatId, `${author}: "${quote}"`)
+            }
             break
         default:
             break

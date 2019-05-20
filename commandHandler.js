@@ -5,9 +5,13 @@ const findQuoteText = (text) => {
     return res ? res[0] : null
 } 
 
-const replaceQuotes = (text) => quote.replace(/"/g, '')
+const replaceQuotes = (text) => text.replace(/"/g, '')
+const randomInt = (min, max) => (
+    Math.floor(Math.random() * ( max - min )) + min
+)
 
-const addQuoteHandler = (msg) => {
+
+const addQuote = (msg) => {
   const text = msg.text
   const arr = text.substring(7).split(' ')
     if (arr.length >= 2) {
@@ -24,4 +28,15 @@ const addQuoteHandler = (msg) => {
         }
 }
 
-module.exports = { addQuoteHandler }
+const getQuoteWithName = async (msg) => {
+    const arr = msg.text.substring(5).split(' ')
+    const name = arr[0].toLowerCase()
+    const quotes = await quoteService.getQuotesWithName(name)
+    const quote = quotes.length === 1 ? quotes[0] : quotes[randomInt(0, quotes.length)]
+    return {
+        author: name,
+        quote: quote.quote
+    }
+}
+
+module.exports = { addQuote, getQuoteWithName }
