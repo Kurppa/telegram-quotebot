@@ -39,6 +39,8 @@ bot.on('message', async (msg) => {
                 bot.sendMessage(chatId, `${author}: "${quote}"`)
             }
             break
+        case '/Khelp':
+            bot.sendMessage(chatId, '')
         default:
             break
     }

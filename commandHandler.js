@@ -9,6 +9,9 @@ const replaceQuotes = (text) => text.replace(/"/g, '')
 const randomInt = (min, max) => (
     Math.floor(Math.random() * ( max - min )) + min
 )
+const capitalize = (name) => (
+    name.charAt(0).toUpperCase() + string.slice(1)
+)
 
 
 const addQuote = (msg) => {
@@ -34,7 +37,7 @@ const getQuoteWithName = async (msg) => {
     const quotes = await quoteService.getQuotesWithName(name)
     const quote = quotes.length === 1 ? quotes[0] : quotes[randomInt(0, quotes.length)]
     return {
-        author: name,
+        author: capitalize(name),
         quote: quote.quote
     }
 }
