@@ -1,7 +1,8 @@
 const quoteService = require('./services/quoteService')
 
+//change so also text with no quotes is accepted
 const findQuoteText = (text) => {
-    const res = text.match(/"(.*?)"/) //matches any text wrapped in doublequotes
+    let res = text.match(/"(.*?)"/) //matches any text wrapped in doublequotes
     return res ? res[0] : null
 } 
 
@@ -15,10 +16,8 @@ const capitalize = (name) => (
 
 
 const addQuote = (msg) => {
-  const text = msg.text
-  const arr = text.substring(7).split(' ')
-    if (arr.length >= 2) {
-        const quote = findQuoteText(arr.splice(1,arr.length).join(' '))
+    if (msg) {
+        const quote = findQuoteText(msg)
             if (quote) {
                 quoteService.addQuote(
                     {
@@ -32,9 +31,15 @@ const addQuote = (msg) => {
 }
 
 const getQuoteWithName = async (msg) => {
-    const arr = msg.text.substring(5).split(' ')
+    const arr = msg.split(' ')
     const name = arr[0].toLowerCase()
+    if (!name) {
+        return
+    }
     const quotes = await quoteService.getQuotesWithName(name)
+    if (quotes.length === 0) {
+        return
+    }
     const quote = quotes.length === 1 ? quotes[0] : quotes[randomInt(0, quotes.length)]
     return {
         author: capitalize(name),
