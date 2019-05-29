@@ -7,31 +7,32 @@ const findQuoteText = (text) => {
 } 
 
 const replaceQuotes = (text) => text.replace(/"/g, '')
+
 const randomInt = (min, max) => (
     Math.floor(Math.random() * ( max - min )) + min
 )
+
 const capitalize = (name) => (
     name.charAt(0).toUpperCase() + name.slice(1)
 )
 
 
 const addQuote = (msg) => {
-    if (msg) {
-        const quote = findQuoteText(msg)
-            if (quote) {
-                quoteService.addQuote(
-                    {
-                        user: msg.from.id,
-                        author: arr[0].toLowerCase(),
-                        quote: replaceQuotes(quote)
-                    }
-                )
+    const author = msg.text.split(' ')[0].toLowerCase()
+    const quote = findQuoteText(msg.text.split(' ').splice(1).join(''))
+    if (quote) {
+        quoteService.addQuote(
+            {
+                user: msg.from.id,
+                author: author,
+                quote: replaceQuotes(quote)
             }
-        }
+        )
+    }
 }
 
 const getQuoteWithName = async (msg) => {
-    const arr = msg.split(' ')
+    const arr = msg.text.split(' ')
     const name = arr[0].toLowerCase()
     if (!name) {
         return

@@ -15,10 +15,13 @@ if (process.env.NODE_EN === 'production') {
     bot = new TelegramBot(token, { polling: true })
 }
 
-const getCommand = (text) => (
+const getCommand = (msg) => (
     {
-        command: text.toLowerCase().split(' ')[0] || null,
-        message: text.toLowerCase().split(' ').slice(1).join('') || null
+        command: msg.text.toLowerCase().split(' ')[0] || null,
+        message: {
+            ...msg,
+            text: msg.text.toLowerCase().split(' ').slice(1).join(' ') || null
+        }
     }
 )
 
@@ -28,25 +31,27 @@ bot.on('message', async (msg) => {
     if (chatId !== Number(process.env.ALLOWED_ID)) {
         return
     }
-
-    const { command, message} = getCommand(msg.text)
-
+    if (!msg.text) {
+        return
+    }
+    
+    const { command, message } = getCommand(msg)
 
     //commands are made to lowercase in getCommand
     switch (command){
         case '/quote':
-            if (!message) {
+            if (!message.text) {
                 return
             }
             await addQuote(message)
             break
         case '/get':
-            if (!message) {
+            if (!message.text) {
                 return
             }
-            const { author, quote } = await getQuoteWithName(message)
-            if (author && quote) {
-                bot.sendMessage(chatId, `${author}: "${quote}"`)
+            const quote = await getQuoteWithName(message)
+            if (quote) {
+                bot.sendMessage(chatId, `${quote.author}: "${quote.quote}"`)
             }
             break
         case '/khelp':
