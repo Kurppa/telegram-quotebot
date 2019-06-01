@@ -15,6 +15,7 @@ if (process.env.NODE_EN === 'production') {
     bot = new TelegramBot(token, { polling: true })
 }
 
+//gets the first word as command and modifies the message object so the command part is removed
 const getCommand = (msg) => (
     {
         command: msg.text.toLowerCase().split(' ')[0] || null,
@@ -35,9 +36,8 @@ bot.on('message', async (msg) => {
         return
     }
     
-    const { command, message } = getCommand(msg)
-
-    //commands are made to lowercase in getCommand
+    const { command, message } = getCommand(msg) //commands are made to lowercase in getCommand
+     
     switch (command){
         case '/quote':
             if (!message.text) {
@@ -52,14 +52,19 @@ bot.on('message', async (msg) => {
             const quote = await getQuoteWithName(message)
             if (quote) {
                 bot.sendMessage(chatId, `${quote.author}: "${quote.quote}"`)
+            } else {
+                bot.sendMessage(chatId, `No quotes for the given name`)
             }
             break
         case '/khelp':
-            bot.sendMessage(chatId, 'No help here')
+            const helpMessage = 'commands:\n'
+                + '  \/quote author \"quotetext\"\n'
+                + '  \/get author'
+
+            bot.sendMessage(chatId, helpMessage)
             break
         default:
             break
     }
 })
 
-module.exports = bot
