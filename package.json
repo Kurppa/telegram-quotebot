@@ -8,7 +8,7 @@
     "start": "node index.js"
   },
   "author": "Peik Feiring",
-  "license": "UNLICENSED",
+  "license": "ISC",
   "dependencies": {
     "express": "^4.17.0",
     "mongoose": "^5.5.9",

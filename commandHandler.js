@@ -18,7 +18,7 @@ const capitalize = (name) => (
 
 const addQuote = (msg) => {
     const author = msg.text.split(' ')[0].toLowerCase()
-    const quote = findQuoteText(msg.text.split(' ').splice(1).join(''))
+    const quote = findQuoteText(msg.text.split(' ').splice(1).join(' '))
     if (quote) {
         quoteService.addQuote(
             {

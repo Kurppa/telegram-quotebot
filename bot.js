@@ -8,6 +8,13 @@ const token = process.env.BOT_TOKEN
 
 let bot
 
+const allowed_id = process.env.ALLOWED_ID
+
+if (!allowed_id) {
+    console.log('no allowed chat id set')
+    process.exit(1)
+}
+
 if (process.env.NODE_EN === 'production') {
     bot = new TelegramBot(token)
     bot.setWebHook(process.env.HEROKU_URL + bot.token)
@@ -16,6 +23,7 @@ if (process.env.NODE_EN === 'production') {
 }
 
 //gets the first word as command and modifies the message object so the command part is removed
+//by default bots only get messages starting with / or messages where the bot is mentioned
 const getCommand = (msg) => (
     {
         command: msg.text.toLowerCase().split(' ')[0] || null,
@@ -28,7 +36,7 @@ const getCommand = (msg) => (
 
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
-    
+
     if (chatId !== Number(process.env.ALLOWED_ID)) {
         return
     }
@@ -37,7 +45,7 @@ bot.on('message', async (msg) => {
     }
     
     const { command, message } = getCommand(msg) //commands are made to lowercase in getCommand
-     
+
     switch (command){
         case '/quote':
             if (!message.text) {

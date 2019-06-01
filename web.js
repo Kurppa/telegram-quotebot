@@ -4,7 +4,9 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 
-let server = app.listen(process.env.PORT, "0.0.0.0", () => {
+const PORT = process.env.PORT || 3000
+
+let server = app.listen(PORT, "0.0.0.0", () => {
   const HOST = server.address().address;
   const PORT = server.address().port;
   console.log(`Web server started at http://${HOST}:${PORT}`);
