@@ -44,4 +44,4 @@ const getQuoteHandler = async (msg) => {
     }
 }
 
-module.exports = { addQuote, getQuoteWithName }
+module.exports = { addQuoteHandler, getQuoteHandler }
