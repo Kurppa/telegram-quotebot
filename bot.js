@@ -2,7 +2,7 @@ process.env.NTBA_FIX_319 = 3 //magic lines
 
 const TelegramBot = require('node-telegram-bot-api')
 
-const { addQuote, getQuoteWithName } = require('./commandHandler')
+const { addQuoteHandler, getQuoteHandler } = require('./commandHandler')
 
 const token = process.env.BOT_TOKEN
 
@@ -40,6 +40,7 @@ bot.on('message', async (msg) => {
     if (chatId !== Number(process.env.ALLOWED_ID)) {
         return
     }
+    
     if (!msg.text) {
         return
     }
@@ -47,17 +48,17 @@ bot.on('message', async (msg) => {
     const { command, message } = getCommand(msg) //commands are made to lowercase in getCommand
 
     switch (command){
-        case '/quote':
+        case '/quote':      
             if (!message.text) {
                 return
             }
-            await addQuote(message)
+            await addQuoteHandler(message)
             break
         case '/get':
             if (!message.text) {
                 return
             }
-            const quote = await getQuoteWithName(message)
+            const quote = await getQuoteHandler(message)
             if (quote) {
                 bot.sendMessage(chatId, `${quote.author}: "${quote.quote}"`)
             } else {

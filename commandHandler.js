@@ -5,7 +5,7 @@ const findQuoteText = (text) => {
     return res ? res[0] : null
 } 
 
-const replaceQuotes = (text) => text.replace(/"/g, '')
+const replaceQuotes = (text) => text.replace(/"/g, '') //removes " -marks from the string
 
 const randomInt = (min, max) => (
     Math.floor(Math.random() * ( max - min )) + min
@@ -15,8 +15,7 @@ const capitalize = (name) => (
     name.charAt(0).toUpperCase() + name.slice(1)
 )
 
-
-const addQuote = (msg) => {
+const addQuoteHandler = (msg) => {
     const author = msg.text.split(' ')[0].toLowerCase()
     const quote = findQuoteText(msg.text.split(' ').splice(1).join(' '))
     if (quote) {
@@ -30,12 +29,9 @@ const addQuote = (msg) => {
     }
 }
 
-const getQuoteWithName = async (msg) => {
-    const arr = msg.text.split(' ')
-    const name = arr[0].toLowerCase()
-    if (!name) {
-        return null
-    }
+const getQuoteHandler = async (msg) => {
+    const name = msg.text.split(' ')[0].toLowerCase()
+   
     const quotes = await quoteService.getQuotesWithName(name)
     if (quotes.length === 0) {
         return null

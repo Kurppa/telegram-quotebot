@@ -24,8 +24,12 @@ const addQuote = async (quoteObject) => {
 }
 
 const getQuotesWithName = async (name) => {
+  try {
     const quotes = await Quote.find({ author: name })
     return quotes
+  } catch (e) {
+    console.log(e.message)
+  }
 }
 
 module.exports = { addQuote, getQuotesWithName }
