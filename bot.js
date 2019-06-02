@@ -1,5 +1,3 @@
-process.env.NTBA_FIX_319 = 3 //magic lines
-
 const TelegramBot = require('node-telegram-bot-api')
 
 const { addQuoteHandler, getQuoteHandler } = require('./commandHandler')
@@ -29,7 +27,7 @@ const getCommand = (msg) => (
         command: msg.text.toLowerCase().split(' ')[0] || null,
         message: {
             ...msg,
-            text: msg.text.toLowerCase().split(' ').slice(1).join(' ') || null
+            text: msg.text.split(' ').slice(1).join(' ') || null
         }
     }
 )
