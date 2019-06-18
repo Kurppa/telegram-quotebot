@@ -4,6 +4,10 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 
+app.get('/', (req,res) => {
+    res.json({ message: "heloost"})
+})
+
 const PORT = process.env.PORT || 4000
 
 let server = app.listen(PORT, "0.0.0.0", () => {
@@ -13,7 +17,7 @@ let server = app.listen(PORT, "0.0.0.0", () => {
 });
 
 module.exports = (bot) => {
-  app.post('/' + bot.token, (req, res) => {
+  app.post('/', (req, res) => {
     bot.processUpdate(req.body);
     res.sendStatus(200);
   });

@@ -26,6 +26,15 @@ const addQuote = async (quoteObject) => {
   }
 }
 
+const getRandomQuote = async (chatId) => {
+  try {
+    const quotes = await Quote.find({ chatId: chatId })
+    return quotes
+  } catch (e) {
+    console.log(e.message)
+  }
+}
+
 const getQuotesWithName = async (chatId, name) => {
   try {
     const quotes = await Quote.find({ chatId: chatId, author: name })
@@ -35,4 +44,4 @@ const getQuotesWithName = async (chatId, name) => {
   }
 }
 
-module.exports = { addQuote, getQuotesWithName }
+module.exports = { getRandomQuote, addQuote, getQuotesWithName }

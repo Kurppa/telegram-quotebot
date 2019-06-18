@@ -27,21 +27,36 @@ const addQuoteHandler = (msg) => {
                 chatId: msg.chat.id,
             }
         )
+        return true
+    } else {
+        return false
     }
 }
 
 const getQuoteHandler = async (msg) => {
-    const name = msg.text.split(' ')[0].toLowerCase()
-   
-    const quotes = await quoteService.getQuotesWithName(msg.chat.id,name)
-    if (quotes.length === 0) {
-        return null
-    } 
+    if (!msg.text) {
+        const quotes = await quoteService.getRandomQuote(msg.chat.id)
+        if (quotes.length === 0) {
+            return null
+        }
+        const quote = quotes.length === 1 ? quotes[0] : quotes[randomInt(0, quotes.length)]
+        return {
+            author: capitalize(quote.author),
+            quote: quote.quote
+        }
+    } else { 
+        const name = msg.text.split(' ')[0].toLowerCase()
+       
+        const quotes = await quoteService.getQuotesWithName(msg.chat.id,name)
+        if (quotes.length === 0) {
+            return null
+        } 
 
-    const quote = quotes.length === 1 ? quotes[0] : quotes[randomInt(0, quotes.length)]
-    return {
-        author: capitalize(name),
-        quote: quote.quote
+        const quote = quotes.length === 1 ? quotes[0] : quotes[randomInt(0, quotes.length)]
+        return {
+            author: capitalize(name),
+            quote: quote.quote
+        }
     }
 }
 

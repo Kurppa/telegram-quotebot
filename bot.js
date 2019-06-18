@@ -14,9 +14,9 @@ AllowedChat.find({})
 
 let bot
 
-if (process.env.NODE_EN === 'production') {
+if (process.env.NODE_ENV === 'production') {
     bot = new TelegramBot(token)
-    bot.setWebHook(`${process.env.URL}/bot${token}`)
+    bot.setWebHook(`${process.env.URL}/`)
 } else {
     bot = new TelegramBot(token, { polling: true })
 }
@@ -35,6 +35,7 @@ const getCommand = (msg) => {
 }
 
 bot.on('message', async (msg) => {
+
     const chatId = msg.chat.id;
     
     if (!msg.text) {
@@ -48,7 +49,6 @@ bot.on('message', async (msg) => {
     }
     
     if(!["/allow", "/info", "/khelp", "/addq", "/getq"].includes(command)) {
-        bot.sendMessage(chatId, `Command doesn't exist`)
         return
     }
     
@@ -77,13 +77,14 @@ bot.on('message', async (msg) => {
             return
         case '/info':
             const infoMessage = 'This is a quotebot\n'
-                + '  \/the bot requires authorization'
+                + '  the bot requires authorization'
+                + '  "\/allow password" to enable bot'
             bot.sendMessage(chatId, infoMessage) 
             return
     }
 
     if (!allowedChats.includes(chatId)) {
-        bot.sendMessage(chatId, `You are not authorized to use this commands ;__;`)
+        bot.sendMessage(chatId, `You are not authorized to use this command ;__;`)
         return
     }
 
@@ -93,13 +94,14 @@ bot.on('message', async (msg) => {
             if (!message.text) {
                 return
             }
-            await addQuoteHandler(message)
-            bot.sendMessage(chatId, `Quote added : )`)
+            const res = await addQuoteHandler(message)
+            if (res) {
+                bot.sendMessage(chatId, `Quote added : )`)
+            } else {
+                bot.sendMessage(chatId, `Quote not added : )`) 
+            }
             break
         case '/getq':
-            if (!message.text) {
-                return
-            }
             const quote = await getQuoteHandler(message)
             if (quote) {
                 bot.sendMessage(chatId, `${quote.author}: "${quote.quote}"`)
@@ -109,8 +111,8 @@ bot.on('message', async (msg) => {
             break
         case '/khelp':
             const helpMessage = 'commands:\n'
-                + '  \/quote author \"quotetext\"\n'
-                + '  \/get author'
+                + '  \/addq author \"quotetext\"\n'
+                + '  \/getq author'
 
             bot.sendMessage(chatId, helpMessage)
             break
@@ -119,3 +121,4 @@ bot.on('message', async (msg) => {
     }
 })
 
+module.exports = bot
