@@ -5,6 +5,10 @@ const quoteSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    chatId: {
+        type: String,
+        required: true
+    },
     quote: {
         type: String,
         required: true,

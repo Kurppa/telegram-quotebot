@@ -1,6 +1,6 @@
 FROM node:11-alpine
 
-COPY telegram-quotebot /app
+COPY . /app
 
 WORKDIR /app
 

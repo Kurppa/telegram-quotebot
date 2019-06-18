@@ -23,7 +23,8 @@ const addQuoteHandler = (msg) => {
             {
                 user: msg.from.id,
                 author: author,
-                quote: replaceQuotes(quote)
+                quote: replaceQuotes(quote),
+                chatId: msg.chat.id,
             }
         )
     }
@@ -32,7 +33,7 @@ const addQuoteHandler = (msg) => {
 const getQuoteHandler = async (msg) => {
     const name = msg.text.split(' ')[0].toLowerCase()
    
-    const quotes = await quoteService.getQuotesWithName(name)
+    const quotes = await quoteService.getQuotesWithName(msg.chat.id,name)
     if (quotes.length === 0) {
         return null
     } 
