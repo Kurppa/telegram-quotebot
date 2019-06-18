@@ -94,12 +94,14 @@ bot.on('message', async (msg) => {
             if (!message.text) {
                 return
             }
-            const res = await addQuoteHandler(message)
-            if (res) {
-                bot.sendMessage(chatId, `Quote added : )`)
-            } else {
-                bot.sendMessage(chatId, `Quote not added : )`) 
-            }
+            
+            addQuoteHandler(message)
+                .then(() => 
+                    bot.sendMessage(chatId, `Quote added : )`)
+                )
+                .catch(e => {
+                    bot.sendMessage(chatId, `${e}`)
+                }) 
             break
         case '/getq':
             const quote = await getQuoteHandler(message)

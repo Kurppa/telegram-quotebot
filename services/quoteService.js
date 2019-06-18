@@ -16,14 +16,10 @@ mongoose.set('useNewUrlParser', true)
 mongoose.set('useCreateIndex', true)
 
 const addQuote = async (quoteObject) => {
-  const quote = new Quote(
-    quoteObject
-  )
-  try {
-    await quote.save()
-  } catch(e) {
-    console.log(e.message)
-  }
+    const  quote = new Quote(
+        quoteObject
+    )
+    return quote.save()
 }
 
 const getRandomQuote = async (chatId) => {

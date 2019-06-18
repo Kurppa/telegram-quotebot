@@ -15,21 +15,25 @@ const capitalize = (name) => (
     name.charAt(0).toUpperCase() + name.slice(1)
 )
 
-const addQuoteHandler = (msg) => {
+const addQuoteHandler = async (msg) => {
     const author = msg.text.split(' ')[0].toLowerCase()
     const quote = findQuoteText(msg.text.split(' ').splice(1).join(' '))
     if (quote) {
-        quoteService.addQuote(
-            {
-                user: msg.from.id,
-                author: author,
-                quote: replaceQuotes(quote),
-                chatId: msg.chat.id,
-            }
-        )
-        return true
+        try {
+            await quoteService.addQuote(
+                {
+                    user: msg.from.id,
+                    author: author,
+                    quote: replaceQuotes(quote),
+                    chatId: msg.chat.id,
+                }
+            )
+            
+        } catch (e) {
+            throw "Failed to save the quote"
+        }
     } else {
-        return false
+        throw "Didn't find a quote ;__;"
     }
 }
 
