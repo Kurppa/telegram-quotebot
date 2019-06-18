@@ -24,15 +24,12 @@ const addQuoteHandler = async (msg) => {
     const quote = findQuoteText(msg.text.split(' ').splice(1).join(' '))
     if (quote) {
         try {
-            await quoteService.addQuote(
-                {
+            await quoteService.addQuote({
                     user: msg.from.id,
                     author: author,
                     quote: replaceQuotes(quote),
                     chatId: msg.chat.id,
-                }
-            )
-            
+                })
         } catch (e) {
             throw "Failed to save the quote"
         }
