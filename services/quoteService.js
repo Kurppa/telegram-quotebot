@@ -15,29 +15,19 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
 mongoose.set('useNewUrlParser', true)
 mongoose.set('useCreateIndex', true)
 
-const addQuote = async (quoteObject) => {
+const addQuote = (quoteObject) => {
     const  quote = new Quote(
         quoteObject
     )
     return quote.save()
 }
 
-const getRandomQuote = async (chatId) => {
-  try {
-    const quotes = await Quote.find({ chatId: chatId })
-    return quotes
-  } catch (e) {
-    console.log(e.message)
-  }
+const getRandomQuote = (chatId) => {
+    return Quote.find({ chatId: chatId })
 }
 
-const getQuotesWithName = async (chatId, name) => {
-  try {
-    const quotes = await Quote.find({ chatId: chatId, author: name })
-    return quotes
-  } catch (e) {
-    console.log(e.message)
-  }
+const getQuotesWithName = (chatId, name) => {
+    return Quote.find({ chatId: chatId, author: name })
 }
 
 module.exports = { getRandomQuote, addQuote, getQuotesWithName }

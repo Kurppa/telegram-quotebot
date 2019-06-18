@@ -93,8 +93,7 @@ bot.on('message', async (msg) => {
         case '/addq':      
             if (!message.text) {
                 return
-            }
-            
+            } 
             addQuoteHandler(message)
                 .then(() => 
                     bot.sendMessage(chatId, `Quote added : )`)
@@ -104,12 +103,13 @@ bot.on('message', async (msg) => {
                 }) 
             break
         case '/getq':
-            const quote = await getQuoteHandler(message)
-            if (quote) {
-                bot.sendMessage(chatId, `${quote.author}: "${quote.quote}"`)
-            } else {
-                bot.sendMessage(chatId, `No quotes for the given name ;__;`)
-            }
+            getQuoteHandler(message)
+                .then(quote => {
+                    bot.sendMessage(chatId, `${quote.author}: "${quote.quote}"`)
+                })
+                .catch(e => {
+                    bot.sendMessage(chatId, `${e}`)
+                })
             break
         case '/khelp':
             const helpMessage = 'commands:\n'
