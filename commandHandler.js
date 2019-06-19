@@ -1,4 +1,5 @@
 const quoteService = require('./services/quoteService')
+const aliasService = require('./services/aliasService')
 
 //matches text wrapped in double quotes
 const findQuoteText = (text) => {
@@ -42,9 +43,10 @@ const addAliasHandler = async (msg) => {
        alias2 = quoted[1] 
     }
     if (alias1 && alias2) {
-        return {
-            alias1: replaceQuotes(alias1),
-            alias2: replaceQuotes(alias2),
+        try {
+            await aliasService.addAlias(alias1, alias2)
+        } catch (e) {
+            throw "Failed to add alias"
         }
     } else {
         throw "Something wrong"
@@ -72,8 +74,8 @@ const addQuoteHandler = async (msg) => {
         try {
             await quoteService.addQuote({
                     user: msg.from.id,
-                    author: replaceQuotes(author),
-                    quote: replaceQuotes(quote),
+                    author: replaceQuotes(author.toLowerCase()),
+                    quote: replaceQuotes(quote.toLowerCase()),
                     chatId: msg.chat.id,
                 })
         } catch (e) {
