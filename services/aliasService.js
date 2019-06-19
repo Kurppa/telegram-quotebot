@@ -1,6 +1,6 @@
 const Alias = require('../models/aliasModel')
 
-const findPersonAliases = async (name) => {
+const findAliases = async (name) => {
     try {
         const object = await Alias.findOne({ aliases: name }, { aliases: 1})
         if (object) {

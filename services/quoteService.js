@@ -29,11 +29,12 @@ const getRandomQuote = (chatId) => {
 
 const getQuotesWithName = async (chatId, name) => {
     try {
-        const aliasList = await findAliases(name.toLowerCase())
+        name = name.toLowerCase()
+        const aliasList = await findAliases(name)
         if (aliasList) {
             return Quote.find({ chatId: chatId, author: { $in : aliasList }})    
         } else {
-            return Quote.find({ chatId: chatId, author: name.toLowerCase() })
+            return Quote.find({ chatId: chatId, author: name })
         }
     } catch (e) {
         throw "Something went wrong ;__;"
