@@ -41,7 +41,11 @@ bot.on('message', async (msg) => {
     if (!msg.text) {
         return
     }
-    
+
+    if (msg.text.length > 400) {
+        return
+    }
+
     const { command, message } = getCommand(msg) //commands are made to lowercase in getCommand
     
     if(!command) {

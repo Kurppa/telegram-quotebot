@@ -21,10 +21,11 @@ const capitalize = (name) => (
 )
 
 const addQuoteHandler = async (msg) => {
-    const quoted = findQuoteText(msg.text)
+    const text = msg.text 
+    const quoted = findQuoteText(text)
     let quote
     let author
-    if (quoted.length === 0) {
+    if (!quoted) {
         throw "No quote found"
     } else if (quoted.length === 1) {
         quote = quoted[0]
@@ -63,8 +64,9 @@ const getQuoteHandler = async (msg) => {
             author: capitalize(quote.author),
             quote: quote.quote
         }
-    } else { 
-        const name = msg.text.split(' ')[0].toLowerCase()
+    } else {
+        const quoted = findQuoteText(msg.text)
+        const name = quoted ? replaceQuotes(quoted[0].toLowerCase()) : msg.text.split(' ')[0].toLowerCase()
        
         const quotes = await quoteService.getQuotesWithName(msg.chat.id,name)
         if (quotes.length === 0) {
@@ -73,7 +75,10 @@ const getQuoteHandler = async (msg) => {
 
         const quote = quotes.length === 1 ? quotes[0] : quotes[randomInt(0, quotes.length)]
         return {
-            author: capitalize(name),
+            author: name.split(" ").map(word => { 
+                let part = capitalize(word)
+                return part
+                }).join(" "),
             quote: quote.quote
         }
     }
