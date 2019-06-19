@@ -52,11 +52,7 @@ const addAliasHandler = async (msg) => {
 }
 
 const addQuoteHandler = async (msg) => {
-<<<<<<< HEAD
     const text = msg.text
-=======
-    const text = msg.text 
->>>>>>> 34125a3a3148ec9fbbeba51485f5e9a0700a30ab
     const quoted = findQuoteText(text)
     let quote
     let author
