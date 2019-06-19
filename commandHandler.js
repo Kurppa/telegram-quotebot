@@ -7,7 +7,7 @@ const findQuoteText = (text) => {
     return res
 } 
 
-//removes double quotes from the string
+//removes double and single quotes from the string
 const replaceQuotes = (text) => text.replace(/['"]/g, '') 
 
 //randomint between min & max
@@ -52,7 +52,11 @@ const addAliasHandler = async (msg) => {
 }
 
 const addQuoteHandler = async (msg) => {
+<<<<<<< HEAD
     const text = msg.text
+=======
+    const text = msg.text 
+>>>>>>> 34125a3a3148ec9fbbeba51485f5e9a0700a30ab
     const quoted = findQuoteText(text)
     let quote
     let author
@@ -95,8 +99,9 @@ const getQuoteHandler = async (msg) => {
             author: capitalize(quote.author),
             quote: quote.quote
         }
-    } else { 
-        const name = msg.text.split(' ')[0].toLowerCase()
+    } else {
+        const quoted = findQuoteText(msg.text)
+        const name = quoted ? replaceQuotes(quoted[0].toLowerCase()) : msg.text.split(' ')[0].toLowerCase()
        
         const quotes = await quoteService.getQuotesWithName(msg.chat.id,name)
         if (quotes.length === 0) {
@@ -105,7 +110,10 @@ const getQuoteHandler = async (msg) => {
 
         const quote = quotes.length === 1 ? quotes[0] : quotes[randomInt(0, quotes.length)]
         return {
-            author: capitalize(name),
+            author: name.split(" ").map(word => { 
+                let part = capitalize(word)
+                return part
+                }).join(" "),
             quote: quote.quote
         }
     }
