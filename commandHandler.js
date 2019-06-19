@@ -20,11 +20,43 @@ const capitalize = (name) => (
     name.charAt(0).toUpperCase() + name.slice(1)
 )
 
+const addAliasHandler = async (msg) => {
+    const text = msg.txt
+    const quoted = findQuoteText(text)
+    let alias1
+    let alias2
+    if (!quoted) {
+        const pieces = text.split(" ")
+        if (pieces.length !== 2) {
+            throw "Something wrong"
+        } else {
+            alias1 = pieces[0]
+            alias2 = pieces[1]
+        }
+    } else if (quoted.length === 1) {
+        alias1 = quoted[0]
+        const restOfText = text.replace(alias1, "")
+        alias2 = restOfText.split(" ")[0] || null
+    } else if (quoted.length === 2) {
+       alias1 = quoted[0] 
+       alias2 = quoted[1] 
+    }
+    if (alias1 && alias2) {
+        return {
+            alias1: replaceQuotes(alias1),
+            alias2: replaceQuotes(alias2),
+        }
+    } else {
+        throw "Something wrong"
+    }
+}
+
 const addQuoteHandler = async (msg) => {
-    const quoted = findQuoteText(msg.text)
+    const text = msg.text
+    const quoted = findQuoteText(text)
     let quote
     let author
-    if (quoted.length === 0) {
+    if (!quoted) {
         throw "No quote found"
     } else if (quoted.length === 1) {
         quote = quoted[0]
@@ -79,4 +111,4 @@ const getQuoteHandler = async (msg) => {
     }
 }
 
-module.exports = { addQuoteHandler, getQuoteHandler }
+module.exports = { addQuoteHandler, getQuoteHandler, addAliasHandler }
