@@ -2,12 +2,13 @@ const quoteService = require('./services/quoteService')
 
 //matches text wrapped in double quotes
 const findQuoteText = (text) => {
-    let res = text.match(/"(.*?)"/) //matches any text wrapped in double quotes
-    return res ? res[0] : null
+    const regex = /"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'/g 
+    const res = text.match(regex) //matches any text wrapped in double or single quotes
+    return res
 } 
 
 //removes double quotes from the string
-const replaceQuotes = (text) => text.replace(/"/g, '') 
+const replaceQuotes = (text) => text.replace(/['"]/g, '') 
 
 //randomint between min & max
 const randomInt = (min, max) => (
@@ -20,21 +21,34 @@ const capitalize = (name) => (
 )
 
 const addQuoteHandler = async (msg) => {
-    const author = msg.text.split(' ')[0].toLowerCase()
-    const quote = findQuoteText(msg.text.split(' ').splice(1).join(' '))
-    if (quote) {
+    const quoted = findQuoteText(msg.text)
+    let quote
+    let author
+    if (quoted.length === 0) {
+        throw "No quote found"
+    } else if (quoted.length === 1) {
+        quote = quoted[0]
+        const restOfText = text.replace(quote, "")
+        author = restOfText.split(" ")[0] || null
+    } else if (quoted.length === 2) {
+        author = quoted[0]
+        quote = quoted[1]
+    } else {
+        throw "Something wrong"
+    }
+    if (author && quote) {
         try {
             await quoteService.addQuote({
                     user: msg.from.id,
-                    author: author,
+                    author: replaceQuotes(author),
                     quote: replaceQuotes(quote),
                     chatId: msg.chat.id,
                 })
         } catch (e) {
-            throw "Failed to save the quote"
+            throw "Failed to save quote"
         }
     } else {
-        throw "Didn't find a quote ;__;"
+        throw "Something wrong"
     }
 }
 
