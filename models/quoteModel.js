@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
 const quoteSchema = new mongoose.Schema({
     user: {
@@ -12,6 +13,7 @@ const quoteSchema = new mongoose.Schema({
     quote: {
         type: String,
         required: true,
+        unique: true,
         maxlength: 200,
         minlength: 3,
     },
@@ -26,6 +28,8 @@ const quoteSchema = new mongoose.Schema({
         default: Date.now
     }
 })
+
+quoteSchema.plugin(uniqueValidator)
 
 const Quote = mongoose.model('Quote', quoteSchema)
 
