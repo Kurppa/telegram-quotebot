@@ -1,7 +1,7 @@
 const Alias = require('../models/aliasModel')
 const sanitize = require('mongo-sanitize')
 
-const findPersonAliases = async (name) => {
+const findAliases = async (name) => {
     try {
         name = name.toLowerCase()
         const object = await Alias.findOne({ aliases: name }, { aliases: 1})

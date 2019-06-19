@@ -42,7 +42,8 @@ bot.on('message', async (msg) => {
         return
     }
 
-    if (msg.text.length > 400) {
+    if (msg.text.length > 500) {
+        bot.sendMessage(chatId, 'kys')
         return
     }
 
