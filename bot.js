@@ -116,6 +116,18 @@ bot.on('message', async (msg) => {
                     bot.sendMessage(chatId, `${e}`)
                 })
             break
+        case '/adda':
+            if (!message.text) {
+                return
+            }
+            addAliasHandler(message)
+                .then({alias1, alias2} => {
+                    bot.sendMessage(chatId, `New aliases ${alias1} and ${alias2}`)
+                })
+                .catch(e => {
+                    bot.sendMessage(chatId, `${e}`)
+                })
+            break
         case '/khelp':
             const helpMessage = 'commands:\n'
                 + '  \/addq author \"quotetext\"\n'

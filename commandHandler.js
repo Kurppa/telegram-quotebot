@@ -45,6 +45,7 @@ const addAliasHandler = async (msg) => {
     if (alias1 && alias2) {
         try {
             await aliasService.addAlias(alias1, alias2)
+            return { alias1, alias2 }
         } catch (e) {
             throw "Failed to add alias"
         }
