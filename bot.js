@@ -82,7 +82,7 @@ bot.on('message', async (msg) => {
             return
         case '/info':
             const infoMessage = 'This is a quotebot\n'
-                + '  the bot requires authorization'
+                + '  the bot requires authorization\n'
                 + '  "\/allow password" to enable bot'
             bot.sendMessage(chatId, infoMessage) 
             return

@@ -6,7 +6,7 @@ const aliasSchema = new mongoose.Schema({
     chatId: {
         type: Number,
         required: true
-    }
+    },
     aliases: [
         {
             type: String,
