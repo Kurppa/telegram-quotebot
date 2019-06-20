@@ -3,6 +3,10 @@ const uniqueValidator = require('mongoose-unique-validator')
 const uniqueArrayValidator = require('mongoose-unique-array')
 
 const aliasSchema = new mongoose.Schema({
+    chatId: {
+        type: Number,
+        required: true
+    }
     aliases: [
         {
             type: String,

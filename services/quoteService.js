@@ -32,7 +32,7 @@ const getRandomQuote = (chatId) => {
 const getQuotesWithName = async (chatId, name) => {
     try {
         name = sanitize(name.toLowerCase())
-        const aliasList = await findAliases(name)
+        const aliasList = await findAliases(name, chatId)
         if (aliasList) {
             return Quote.find({ chatId: chatId, author: { $in : aliasList }})    
         } else {
