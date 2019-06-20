@@ -22,7 +22,7 @@ const capitalize = (name) => (
 )
 
 const addAliasHandler = async (msg) => {
-    const text = msg.txt
+    const text = msg.text
     const quoted = findQuoteText(text)
     let alias1
     let alias2
