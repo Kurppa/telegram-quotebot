@@ -1,6 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api')
 
-const { addQuoteHandler, getQuoteHandler } = require('./commandHandler')
+const { addQuoteHandler, getQuoteHandler, addAliasHandler } = require('./commandHandler')
 const AllowedChat = require('./models/allowedChat.js')
 
 const token = process.env.BOT_TOKEN
@@ -53,7 +53,7 @@ bot.on('message', async (msg) => {
         return
     }
     
-    if(!["/allow", "/info", "/khelp", "/addq", "/getq"].includes(command)) {
+    if(!["/adda", "/allow", "/info", "/khelp", "/addq", "/getq"].includes(command)) {
         return
     }
     
@@ -121,7 +121,7 @@ bot.on('message', async (msg) => {
                 return
             }
             addAliasHandler(message)
-                .then({alias1, alias2} => {
+                .then(({alias1, alias2}) => {
                     bot.sendMessage(chatId, `New aliases ${alias1} and ${alias2}`)
                 })
                 .catch(e => {
