@@ -10,7 +10,7 @@ const aliasSchema = new mongoose.Schema({
     aliases: [
         {
             type: String,
-            unique: true,
+            minlength: 3
         }
     ],
     date: {
@@ -20,7 +20,6 @@ const aliasSchema = new mongoose.Schema({
 })
 
 aliasSchema.plugin(uniqueValidator)
-aliasSchema.plugin(uniqueArrayValidator)
 
 const Alias = mongoose.model('Alias', aliasSchema)
 

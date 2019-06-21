@@ -22,32 +22,38 @@ const capitalize = (name) => (
 )
 
 const addAliasHandler = async (msg) => {
-    const text = msg.text
+    let text = msg.text
+    text = text.replace(/”/g, '"')
     const quoted = findQuoteText(text)
     let alias1
     let alias2
     if (!quoted) {
         const pieces = text.split(" ")
         if (pieces.length !== 2) {
-            throw "Something wrong"
+            throw "This all seems a bit confusing"
         } else {
             alias1 = pieces[0]
             alias2 = pieces[1]
         }
     } else if (quoted.length === 1) {
         alias1 = quoted[0]
-        const restOfText = text.replace(alias1, "")
+        const restOfText = text.replace(alias1, "").trim()
         alias2 = restOfText.split(" ")[0] || null
+        alias1 = replaceQuotes(alias1)
     } else if (quoted.length === 2) {
-       alias1 = quoted[0] 
-       alias2 = quoted[1] 
+       alias1 = replaceQuotes(quoted[0])
+       alias2 = replaceQuotes(quoted[1])
     }
     if (alias1 && alias2) {
         try {
             await aliasService.addAlias(alias1, alias2, msg.chat.id)
             return { alias1, alias2 }
         } catch (e) {
-            throw "Failed to add alias"
+            if (e.code && e.code === 1) {
+                throw e.message
+            } else {
+                throw "Failed to add alias"
+            }
         }
     } else {
         throw "Something wrong"
@@ -55,7 +61,8 @@ const addAliasHandler = async (msg) => {
 }
 
 const addQuoteHandler = async (msg) => {
-    const text = msg.text
+    let text = msg.text
+    text = text.replace(/”/g, '"')
     const quoted = findQuoteText(text)
     let quote
     let author
@@ -69,14 +76,14 @@ const addQuoteHandler = async (msg) => {
         author = quoted[0]
         quote = quoted[1]
     } else {
-        throw "Something wrong"
+        throw "Found too many quotes"
     }
     if (author && quote) {
         try {
             await quoteService.addQuote({
                     user: msg.from.id,
                     author: replaceQuotes(author.toLowerCase()),
-                    quote: replaceQuotes(quote.toLowerCase()),
+                    quote: replaceQuotes(quote),
                     chatId: msg.chat.id,
                 })
         } catch (e) {
@@ -109,7 +116,7 @@ const getQuoteHandler = async (msg) => {
 
         const quote = quotes.length === 1 ? quotes[0] : quotes[randomInt(0, quotes.length)]
         return {
-            author: name.split(" ").map(word => { 
+            author: quote.author.split(" ").map(word => { 
                 let part = capitalize(word)
                 return part
                 }).join(" "),
